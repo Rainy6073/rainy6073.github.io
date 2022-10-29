@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+
+<title>Check: Finale</title>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1073.0" data-gr-ext-installed="">
+    <script>
+    </script>
+    <center>
+<h1 style="font-family:verdana">Check your answer for Finale</h1>
+    </center>
+<main>
+    <script id="check_answer">
+    window.onload=function() {
+      form = document.getElementsByClassName('call-in-answer-panel')[0]
+      form.onsubmit=function() {
+        right_answer = 'SQUAREDANCES'
+        answer = document.getElementById('id_answer').value
+        answer = normalize_puzzle_answer(answer)
+
+        // Remove solved panel if it exists
+        if (document.contains(document.getElementById('solved-panel'))) {
+          document.getElementById("solved-panel").remove();
+        }
+
+        // Create new solved panel
+        node = document.createElement('div')
+        node.setAttribute('id', 'solved-panel')
+        if (answer == normalize_puzzle_answer(right_answer)) {
+          node.setAttribute('class', 'solved-panel')
+          node.innerHTML = "<h4>Solved!</h4><p>The answer was <b>" + right_answer + "</b>.</p>"
+        } else {
+          node.setAttribute('class', 'unsolved-panel')
+          node.innerHTML = "<h4>Incorrect!</h4>"
+        }
+
+        // Inject it
+        form.parentNode.insertBefore(node, form)
+
+        // Return false to prevent GET request from executing
+        return false;
+      }
+    }
+
+    function normalize_puzzle_answer(answer) {
+      return answer.toUpperCase().replace(/[^A-Z0-9]/g, '')
+    }
+  </script>
+  <center>
+<form class="call-in-answer-panel">
+
+        <div class="row">
+            <div class="four columns">
+                <label for="id_answer" style="font-family:verdana">Enter your guess:</label>
+            </div>
+            <div class="four columns">
+                <input type="text" name="answer" maxlength="500" required="" id="id_answer">
+
+            </div>
+            <div class="four columns">
+                <button class="btn" type="submit" style="font-family:verdana">Submit</button>
+            </div>
+        </div>
+
+    </form>
+  </center>
+</main>
