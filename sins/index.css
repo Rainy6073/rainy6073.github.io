@@ -1,6 +1,8 @@
 div{
   border-color: blue;
   margin: 20px;
+  height: auto;
+  width: auto;
 }
 
 .topnav {
@@ -29,6 +31,4 @@ div{
 #highlight {
   border-width: 5px;
   background-color: #e6e6e6;
-  height: 200px;
-  width: 200px;
 }
