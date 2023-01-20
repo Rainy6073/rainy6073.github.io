@@ -1,5 +1,6 @@
 div{
   border-color: blue;
+  margin: 20px;
 }
 
 .topnav {
@@ -23,4 +24,11 @@ div{
   background-color: white;
   color: #0062ff;
   transition: color .2s ease-in;
+}
+
+#highlight {
+  border-width: 5px;
+  background-color: #e6e6e6;
+  height: 200px;
+  width: 200px;
 }
