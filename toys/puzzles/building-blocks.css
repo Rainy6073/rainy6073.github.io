@@ -30,7 +30,7 @@
   }
   
   #bblocks {
-    position:relative;
+    position:absolute;
     width:450px;
     top:90%;
     margin-left: auto;
