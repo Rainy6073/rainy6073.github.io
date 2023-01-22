@@ -4,7 +4,7 @@ div{
 }
 
 .topnav {
-  background-color: #white;
+  background-color: white;
   overflow: hidden;
   text-align: center;
   font-family: Verdana, sans-serif;
@@ -36,6 +36,17 @@ div{
 #bblocks {
   background-color: #787878;
   position:relative;
-  width:660px;
+  width:450px;
   top:90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grow {
+  transition: 0.3s;
+}
+
+.grow:hover{
+  transform:scale(1.05);
+  z-index: 0.5;
 }
