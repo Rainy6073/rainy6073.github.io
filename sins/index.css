@@ -41,6 +41,11 @@ div{
   margin-right: auto;
 }
 
+#bblocks-title {
+  z-index: 2;
+  position:absolute;
+}
+
 .grow {
   transition: 0.3s;
 }
