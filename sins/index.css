@@ -33,6 +33,9 @@ div{
   width: auto;
 }
 
-#bold {
+#bblocks {
   background-color: #787878;
+  position:relative;
+  left:50%;
+  top:90%;
 }
