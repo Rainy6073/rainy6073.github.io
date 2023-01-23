@@ -1,5 +1,4 @@
 div{
-  border-color: blue;
   margin: 20px;
 }
 
@@ -31,21 +30,13 @@ div{
   border-color:black;
   height: 1100px;
   width: auto;
-  background-color: white;
+  /* background-color: gray; */
 }
 
 #bblocks {
-  position:absolute;
   width:450px;
+  margin:auto;
   top:90%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 100px;
-}
-
-#bblocks-title {
-  z-index: 2;
-  position:absolute;
 }
 
 .grow {
