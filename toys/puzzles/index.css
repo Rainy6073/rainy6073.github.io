@@ -33,9 +33,10 @@ div{
 }
 
 #bblocks {
-  width:450px;
+  width:380px;
   height: 1000px;
-  margin:auto;
+  margin-left:auto;
+  margin-right: auto;
   background-color: gray;
 }
 
