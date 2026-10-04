@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coming Soon*</title>
+<style>
+  :root {
+    --ink: 158, 186, 255;
+    --bg-deep: #02030a;
+    --bg-blue: #0a1a4a;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, var(--bg-blue) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 70% at 10% 100%, #07123a 0%, transparent 65%),
+      var(--bg-deep);
+    color: rgba(var(--ink), .78);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 30vh;
+    cursor: default;
+  }
+
+  /* the whole phrase; scaled by JS so the chain always fits the screen */
+  #phrase {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: clamp(2.6rem, 9vw, 6.5rem);
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1;
+    transform-origin: 50% 100%;
+    transition: transform .9s cubic-bezier(.2,.7,.2,1), color .6s ease;
+    padding: .2em .1em 0;
+    touch-action: manipulation;
+  }
+  #phrase:hover, #phrase.active { color: rgba(var(--ink), 1); }
+
+  .apos { color: rgba(var(--ink), .9); transition: color .6s ease; }
+  #phrase:hover .apos, #phrase.active .apos { color: #fff; }
+
+  /* each layer is an exponent of the one before it */
+  .layer {
+    display: none;
+    position: relative;
+    top: -.72em;
+    margin-left: .06em;
+    font-size: .72em;
+    font-weight: 600;
+  }
+  .layer.show {
+    display: inline;
+    animation: rise .9s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .layer.leaving { animation: sink .5s ease both; }
+
+  @keyframes rise {
+    from { opacity: 0; filter: blur(6px); }
+    to   { opacity: 1; filter: blur(0); }
+  }
+  @keyframes sink {
+    from { opacity: 1; }
+    to   { opacity: 0; filter: blur(6px); }
+  }
+
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #phrase, .layer.show, .layer.leaving { transition: none; animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1 id="phrase" tabindex="0" aria-describedby="full">Coming Soon<span class="apos">*</span></h1>
+<p class="sr" id="full">Coming soon, by the end of the month, or maybe later, hopefully not, but it depends on how other things are doing, like robotics, or college applications, or the state of our country, but mostly based on procrastination.</p>
+
+<script>
+(() => {
+  const layers = [
+    "by the end of the month*",
+    "or maybe later*",
+    "hopefully not*",
+    "but it depends on how other things are doing*",
+    "like robotics*",
+    "or college applications*",
+    "or the state of our country*",
+    "but mostly based on procrastination..."
+  ];
+
+  const phrase = document.getElementById("phrase");
+
+  // Build the nested chain: each layer lives inside the one before it.
+  const spans = [];
+  let parent = phrase;
+  layers.forEach((text) => {
+    const s = document.createElement("span");
+    s.className = "layer";
+    const t = document.createElement("span");
+    t.className = "txt";
+    // Keep the trailing apostrophe styled like the main one.
+    if (text.endsWith("*")) {
+      t.append(text.slice(0, -1));
+      const a = document.createElement("span");
+      a.className = "apos";
+      a.textContent = "*";
+      t.append(a);
+    } else {
+      t.textContent = text;
+    }
+    s.append(t);
+    parent.append(s);
+    spans.push(s);
+    parent = s;
+  });
+
+  let shown = 0;
+  let addTimer = null;
+  let removeTimer = null;
+
+  function fit() {
+    const avail = window.innerWidth * 0.92;
+    const w = phrase.offsetWidth;
+    const scale = Math.min(1, avail / w);
+    phrase.style.transform = `scale(${scale})`;
+  }
+
+  function add() {
+    if (shown >= spans.length) return clearInterval(addTimer);
+    const s = spans[shown++];
+    s.classList.remove("leaving");
+    s.classList.add("show");
+    fit();
+  }
+
+  function remove() {
+    if (shown <= 0) return clearInterval(removeTimer);
+    const s = spans[--shown];
+    s.classList.add("leaving");
+    setTimeout(() => {
+      if (spans.indexOf(s) >= shown) s.classList.remove("show", "leaving");
+      fit();
+    }, 480);
+  }
+
+  function start() {
+    clearInterval(removeTimer);
+    clearInterval(addTimer);
+    phrase.classList.add("active");
+    add();
+    addTimer = setInterval(add, 1100);
+  }
+
+  function stop() {
+    clearInterval(addTimer);
+    clearInterval(removeTimer);
+    phrase.classList.remove("active");
+    // let the layers slowly dissolve once the cursor leaves
+    removeTimer = setInterval(remove, 450);
+  }
+
+  phrase.addEventListener("mouseenter", start);
+  phrase.addEventListener("mouseleave", stop);
+  phrase.addEventListener("focus", start);
+  phrase.addEventListener("blur", stop);
+  // touch: tap to toggle
+  phrase.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    phrase.classList.contains("active") ? stop() : start();
+  }, { passive: false });
+
+  window.addEventListener("resize", fit);
+  fit();
+})();
+</script>
+</body>
+</html>
